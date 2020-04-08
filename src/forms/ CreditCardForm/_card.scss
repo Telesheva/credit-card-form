@@ -1,0 +1,201 @@
+@import "src/assets/scss/mixins";
+
+.card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.9s;
+  transform-style: preserve-3d;
+  transform-origin: top right;
+
+  &__side {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    backface-visibility: hidden;
+  }
+
+  .card__back-side {
+    transform: rotateY(180deg);
+
+    &_body {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      position: absolute;
+      cursor: auto;
+      top: 0;
+      z-index: 4;
+      width: 100%;
+      height: 100%;
+      border-radius: 15px;
+      background: #06021d73;
+    }
+
+    &_top {
+      background: #000013cc;
+      width: 100%;
+      height: 48px;
+      margin-top: 25px;
+    }
+
+    &_bottom {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      padding-top: 35px;
+    }
+  }
+
+
+  &-wrapper {
+    width: 440px;
+    height: 270px;
+    perspective: 1000px;
+    margin: 0 0 25px 20px;
+    z-index: 2;
+    top: 70px;
+    position: absolute;
+  }
+
+  &__cover {
+    &_img {
+      width: 440px;
+      height: 270px;
+      border-radius: 15px;
+      box-shadow: 0 20px 60px 0 rgba(14, 42, 90, 0.55);
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    z-index: 4;
+    background: #06021d73;
+    width: 100%;
+    height: 270px;
+    border-radius: 15px;
+    text-shadow: 7px 6px 10px rgba(14, 42, 90, 0.8);
+  }
+
+  &__top {
+    width: 100%;
+    margin-top: 22px;
+    display: flex;
+    justify-content: space-between;
+
+    &_chip {
+      width: 60px;
+      top: 40px;
+      margin-left: 22px;
+    }
+
+    &_visa {
+      height: 45px;
+      margin-right: 22px;
+    }
+  }
+
+  &__cvv {
+    display: flex;
+    flex-direction: column;
+    margin-top: 12px;
+    text-align: right;
+
+    &_line {
+      background: #ffffff;
+      width: 90%;
+      margin: 0 auto;
+      height: 42px;
+      border-radius: 5px;
+    }
+
+    &_text {
+      color: #ffffff;
+      font-size: 15px;
+      margin: 0 30px 5px 0;
+    }
+  }
+
+  &__number {
+    label {
+      font-weight: bold;
+      line-height: 1;
+      color: #fff;
+      font-size: 27px;
+      cursor: pointer;
+      transition: padding 100ms ease-out;
+    }
+
+    &:hover {
+      @include card-item-hover;
+      padding: 10px 12px;
+    }
+
+    span {
+      margin-right: 3px;
+    }
+  }
+
+  &__bottom {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #ffffff;
+    min-height: 65px;
+
+    &_data {
+      box-sizing: border-box;
+      transition: padding 200ms ease-out;
+
+      label {
+        font-family: "Source Code Pro", monospace;
+        font-weight: bold;
+        color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+      }
+
+      &:first-child {
+        min-width: 70%;
+        min-height: 35px;
+        margin: 0 0 5px 22px;
+        box-sizing: border-box;
+
+        &:hover {
+          @include card-item-hover;
+          padding: 5px 12px;
+        }
+      }
+
+      &:last-child {
+        margin: 0 22px 10px 0;
+
+        &:hover {
+          @include card-item-hover;
+          padding: 5px 12px;
+        }
+      }
+    }
+
+    &_title {
+      opacity: 0.7;
+      font-size: 13px;
+    }
+
+    &_text {
+      font-size: 18px;
+    }
+
+    &_text-wrapper {
+      display: inline-flex;
+      align-items: flex-end;
+    }
+  }
+}

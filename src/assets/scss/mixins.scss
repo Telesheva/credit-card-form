@@ -1,0 +1,6 @@
+@mixin card-item-hover {
+  border: 2px solid rgba(255, 255, 255, 0.88);
+  border-radius: 6px;
+  background: #06021d73;
+  transition: padding 100ms ease-in-out;
+}

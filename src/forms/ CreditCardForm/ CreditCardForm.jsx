@@ -1,6 +1,7 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import './CreditCardForm.scss';
 import { Formik } from 'formik';
+import * as Yup from 'yup';
 import creditCardBackground from '../../assets/img/23.jpeg';
 import chip from '../../assets/img/chip.png';
 import visa from '../../assets/img/visa.png';
@@ -10,10 +11,37 @@ const CreditCardForm = () => {
 
   return (
     <Formik
-      initialValues={{name: ''}}
-      onSubmit={values => console.log('Submit: ', values)}>
+      initialValues={{
+        number: null,
+        holders: '',
+        month: null,
+        year: null,
+        cvv: null
+      }}
+      onSubmit={(values, {setSubmitting}) => {
+        console.log('Submit: ', values);
+        setTimeout(() => {
+          console.log('Server response: ', values);
+          setSubmitting(false);
+        }, 1500);
+      }}
+      validate={values => {
+        const errors = {};
+        if (!values.month) {
+          errors.month = 'Select the month of expire, please!';
+        } else if (!values.year) {
+          errors.month = 'Select the year of expire, please!';
+        }
+        return errors;
+      }}
+      validationSchema={
+        Yup.object().shape({
+          number: Yup.string().matches(/[1234567890]/g).test('number', 'Card number must contain exactly 16 characters', val => val.length === 16).required('Please fill card number field!')
+        })
+      }
+    >
       {
-        ({handleSubmit, handleChange, values}) => (
+        ({handleSubmit, handleChange, values, errors, handleBlur, touched, isSubmitting}) => (
           <form onSubmit={handleSubmit} className="form">
             <div className="card-wrapper">
               <div className={isFlipped ? 'card is-flipped' : 'card'}>
@@ -98,6 +126,7 @@ const CreditCardForm = () => {
                 </label>
                 <input
                   id="cardNumInput"
+                  name="number"
                   type="text"
                   className="form__input"
                   onChange={handleChange}
@@ -110,6 +139,8 @@ const CreditCardForm = () => {
                 </label>
                 <input
                   id="cardHoldersInput"
+                  name="holders"
+                  required
                   type="text"
                   className="form__input"
                   onChange={handleChange}
@@ -122,10 +153,13 @@ const CreditCardForm = () => {
                   <div className="form__selects-wrapper">
                     <div className="form__select-wrapper">
                       <select id="expiresMonthSelect"
+                              name="month"
+                              required
                               defaultValue="Month"
                               className="form__select-wrapper_select"
                               onChange={handleChange}
                               onFocus={() => setIsFlipped(false)}
+                              onBlur={handleBlur}
                       >
                         <option value="Month" disabled>Month</option>
                         <option value="01">01</option>
@@ -147,9 +181,11 @@ const CreditCardForm = () => {
                       <select
                         id="expiresYearSelect"
                         defaultValue="Year"
+                        name="year"
                         className="form__select-wrapper_select"
                         onChange={handleChange}
                         onFocus={() => setIsFlipped(false)}
+                        onBlur={handleBlur}
                       >
                         <option value="Year" disabled>Year</option>
                         <option value="2020">2020</option>
@@ -173,13 +209,18 @@ const CreditCardForm = () => {
                   <label>CVV</label>
                   <input type="text"
                          className="form__input"
+                         name="cvv"
                          onChange={handleChange}
                          onFocus={() => setIsFlipped(true)}
                          onBlur={() => setIsFlipped(false)}
                   />
                 </div>
               </div>
-              <button className="btn btn__submit">Submit</button>
+              <div className="form__errors">{
+                (errors && touched.month && touched.year) &&
+                Object.values(errors).map(error => <span key={Math.random()}>{error}</span>)
+              }</div>
+              <button type="submit" disabled={isSubmitting} className="btn btn__submit">Submit</button>
             </div>
           </form>
         )
