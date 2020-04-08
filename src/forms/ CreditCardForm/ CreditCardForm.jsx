@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import './CreditCardForm.scss';
 import { Formik } from 'formik';
 import creditCardBackground from '../../assets/img/23.jpeg';
@@ -6,6 +6,8 @@ import chip from '../../assets/img/chip.png';
 import visa from '../../assets/img/visa.png';
 
 const CreditCardForm = () => {
+  const [isFlipped, setIsFlipped] = useState(false);
+
   return (
     <Formik
       initialValues={{name: ''}}
@@ -13,44 +15,78 @@ const CreditCardForm = () => {
       {
         ({handleSubmit, handleChange, values}) => (
           <form onSubmit={handleSubmit} className="form">
-            <div className="card">
-              <div className="card__cover">
-                <img src={creditCardBackground} alt="credit-card" className="card__cover_img"/>
-              </div>
-              <div className="card__body">
-                <div className="card__top">
-                  <img src={chip} alt="chip" className="card__top_chip"/>
-                  <img src={visa} alt="visa-logo" className="card__top_visa"/>
-                </div>
-                <div className="card__number">
-                  <span>#</span>
-                  <span>#</span>
-                  <span>#</span>
-                  <span>#</span>
-                  <span>&emsp;</span>
-                  <span>#</span>
-                  <span>#</span>
-                  <span>#</span>
-                  <span>#</span>
-                  <span>&emsp;</span>
-                  <span>#</span>
-                  <span>#</span>
-                  <span>#</span>
-                  <span>#</span>
-                  <span>&emsp;</span>
-                  <span>#</span>
-                  <span>#</span>
-                  <span>#</span>
-                  <span>#</span>
-                </div>
-                <div className="card__bottom">
-                  <div className="card__bottom_data">
-                    <span className="card__bottom_title">Card Holder</span>
-                    <span className="card__bottom_text">FULL NAME</span>
+            <div className="card-wrapper">
+              <div className={isFlipped ? 'card is-flipped' : 'card'}>
+                <div className=" card__side card__front-side">
+                  <div className="card__cover">
+                    <img src={creditCardBackground} alt="credit-card" className="card__cover_img"/>
                   </div>
-                  <div className="card__bottom_data">
-                    <span className="card__bottom_title">Expires</span>
-                    <span className="card__bottom_text">MM/YY</span>
+                  <div className="card__body">
+                    <div className="card__top">
+                      <img src={chip} alt="chip" className="card__top_chip"/>
+                      <img src={visa} alt="visa-logo" className="card__top_visa"/>
+                    </div>
+                    <div className="card__number">
+                      <label htmlFor="cardNumInput">
+                        <span>#</span>
+                        <span>#</span>
+                        <span>#</span>
+                        <span>#</span>
+                        <span>&emsp;</span>
+                        <span>#</span>
+                        <span>#</span>
+                        <span>#</span>
+                        <span>#</span>
+                        <span>&emsp;</span>
+                        <span>#</span>
+                        <span>#</span>
+                        <span>#</span>
+                        <span>#</span>
+                        <span>&emsp;</span>
+                        <span>#</span>
+                        <span>#</span>
+                        <span>#</span>
+                        <span>#</span>
+                      </label>
+                    </div>
+                    <div className="card__bottom">
+                      <div className="card__bottom_data">
+                        <label htmlFor="cardHoldersInput">
+                          <span className="card__bottom_title">Card Holder</span>
+                          <span className="card__bottom_text">FULL NAME</span>
+                        </label>
+                      </div>
+                      <div className="card__bottom_data">
+                        <label htmlFor="expiresMonthSelect">
+                          <span className="card__bottom_title">Expires</span>
+                        </label>
+                        <div className="card__bottom_text-wrapper">
+                          <label htmlFor="expiresMonthSelect">
+                            <span className="card__bottom_text">MM</span>
+                          </label>
+                          <span className="card__bottom_text">/</span>
+                          <label htmlFor="expiresYearSelect">
+                            <span className="card__bottom_text">YY</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="card__side card__back-side">
+                  <div className="card__cover">
+                    <img src={creditCardBackground} alt="credit-card" className="card__cover_img"/>
+                  </div>
+                  <div className="card__back-side_body">
+                    <div className="card__back-side_top"/>
+                    <div className="card__cvv">
+                      <span className="card__cvv_text">CVV</span>
+                      <div className="card__cvv_line">
+                      </div>
+                    </div>
+                    <div className="card__back-side_bottom">
+                      <img src={visa} alt="visa-logo" className="card__top_visa"/>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -60,20 +96,37 @@ const CreditCardForm = () => {
                 <label className="form__input_label">
                   Card Number
                 </label>
-                <input type="text" className="form__input" onChange={handleChange}/>
+                <input
+                  id="cardNumInput"
+                  type="text"
+                  className="form__input"
+                  onChange={handleChange}
+                  onFocus={() => setIsFlipped(false)}
+                />
               </div>
               <div className="form__input-wrapper">
                 <label className="form__input_label">
                   Card Holders
                 </label>
-                <input type="text" className="form__input" onChange={handleChange}/>
+                <input
+                  id="cardHoldersInput"
+                  type="text"
+                  className="form__input"
+                  onChange={handleChange}
+                  onFocus={() => setIsFlipped(false)}
+                />
               </div>
               <div className="form__controls">
                 <div className="form__selects">
-                  <label htmlFor="select1">Expiration Date</label>
+                  <label htmlFor="expiresMonthSelect">Expiration Date</label>
                   <div className="form__selects-wrapper">
                     <div className="form__select-wrapper">
-                      <select id="select1" defaultValue="Month" className="form__select-wrapper_select" onChange={handleChange}>
+                      <select id="expiresMonthSelect"
+                              defaultValue="Month"
+                              className="form__select-wrapper_select"
+                              onChange={handleChange}
+                              onFocus={() => setIsFlipped(false)}
+                      >
                         <option value="Month" disabled>Month</option>
                         <option value="01">01</option>
                         <option value="02">02</option>
@@ -91,7 +144,13 @@ const CreditCardForm = () => {
                       <div className="select-arrow"/>
                     </div>
                     <div className="form__select-wrapper">
-                      <select defaultValue="Year" className="form__select-wrapper_select" onChange={handleChange}>
+                      <select
+                        id="expiresYearSelect"
+                        defaultValue="Year"
+                        className="form__select-wrapper_select"
+                        onChange={handleChange}
+                        onFocus={() => setIsFlipped(false)}
+                      >
                         <option value="Year" disabled>Year</option>
                         <option value="2020">2020</option>
                         <option value="2021">2021</option>
@@ -112,7 +171,12 @@ const CreditCardForm = () => {
                 </div>
                 <div className="form__input-wrapper">
                   <label>CVV</label>
-                  <input type="text" className="form__input" onChange={handleChange}/>
+                  <input type="text"
+                         className="form__input"
+                         onChange={handleChange}
+                         onFocus={() => setIsFlipped(true)}
+                         onBlur={() => setIsFlipped(false)}
+                  />
                 </div>
               </div>
               <button className="btn btn__submit">Submit</button>
